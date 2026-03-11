@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <h2>Report Summary</h2>
+    <div class="summary-box">
+        <p><span>Window Start:</span> <strong>{{ report.start_date }}</strong></p>
+        <p><span>Transactions:</span> <strong>{{ report.transaction_count }}</strong></p>
+        <p><span>Total Sales:</span> <strong>${{ report.total_sales }}</strong></p>
+        <p><span>10% Fee:</span> <strong>${{ report.tt_pricing }}</strong></p>
+    </div>
+
+    <h3>Item Sales Breakdown</h3>
+    <ul>
+        {% for item, count in report.item_sales.items %}
+            <li>
+                <span>{{ item }}</span>
+                <strong>{{ count }}</strong>
+            </li>
+        {% empty %}
+            <li>No items found in this window.</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <h3>Export Data</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p style="font-size: 0.9rem; color: #64748b;">To download the processed CSV, re-select your file below:</p>
+        {{ form.as_p }}
+        <button type="submit" name="download_btn" class="btn">Download CSV</button>
+    </form>
+
+    <a href="/" class="btn secondary">Back to Upload</a>
+
+{% endblock %}
